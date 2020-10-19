@@ -1,0 +1,15 @@
+{
+    "name": "ats/scrapping",
+    "description": "This is scrapping assignment",
+    "type": "project",
+    "require": {
+        "php": "5.6"
+    },
+    "authors": [
+        {
+            "name": "Keshari Nandan",
+            "email": "keshari.nandan2@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}

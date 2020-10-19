@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+  app:
+    build:
+      context: app
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/app
+    environment:
+      USERNAME: 'email'
+      PASSWORD: 'password'
+      DEBUG: 1

@@ -8,7 +8,7 @@ use App\Request;
 
 class Main
 {
-    private static $headers;
+    private static $headers = [];
 
     /**
      * Main constructor make the required call to get the access_token
@@ -16,7 +16,10 @@ class Main
      */
     public function __construct()
     {
-        self::$headers = Auth::init($_ENV['USERNAME'], $_ENV['PASSWORD']);
+        $cookies = Auth::init('describly2@gmail.com', 'K2s@12345');
+        if (!Request::$useCookieJar) {
+            self::$headers = array_merge(self::$headers, $cookies);
+        }
     }
 
     public function scrap()
@@ -25,17 +28,16 @@ class Main
         $userInfo = $this->getLoggedInUserInfo();
         print_r(self::$headers);
         die();
-        return 'Hellow';
+        return 'Hello';
     }
 
 
     private function getLoggedInUserInfo()
     {
-        $response = Request::get('/v1/users/me', self::$headers);
-
-        print_r($response->getResponse());
-        print_r($response->getHeaders());
+        $response = Request::get('/v1/users/me');
+        print_r('****************');
         print_r($response->getStatusCode());
+        die();
     }
 }
 

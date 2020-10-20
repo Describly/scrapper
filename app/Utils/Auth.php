@@ -15,6 +15,8 @@ class Auth
      *
      * @param $username
      * @param $password
+     *
+     * @return array
      */
     public static function init($username, $password)
     {
@@ -31,31 +33,11 @@ class Auth
             throw new \RuntimeException('Unable to fetch the access token from the server.');
         }
 
-        $responseArr = json_decode($response->getResponse(), true);
-
-        // Set and return the header required for next request
-        $reqHeaders = [];
-
-        if (array_key_exists('access_token', $responseArr) && array_key_exists('token_type', $responseArr)) {
-//            $reqHeaders['Authorization'] = $responseArr['token_type'].' '.$responseArr['access_token'];
+        // Set and return the header required for next request if cookiejar is not set
+        $cookies = [];
+        if (!Request::$useCookieJar) {
+            $cookies[] = 'Cookie: '.implode('; ', $response->getCookies());
         }
-
-        $cookies = $response->getCookies();
-        $requiredCookieName = ['__cfduid', 'pcId', 'accessToken', 'refreshToken'];
-        $requiredCookies = [];
-        if (!empty($cookies)) {
-            // Filtering only required cookie for next request
-            foreach ($cookies as $cookie) {
-                $cookieArr = explode('=', $cookie);
-                if (count($cookieArr) <= 0) {
-                    continue;
-                }
-                if (in_array($cookieArr[0], $requiredCookieName, false)) {
-                    $requiredCookies[] = $cookie;
-                }
-            }
-            $reqHeaders['cookie'] = implode('; ', $requiredCookies);
-        }
-        return $reqHeaders;
+        return $cookies;
     }
 }

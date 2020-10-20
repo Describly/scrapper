@@ -8,6 +8,6 @@ services:
     volumes:
       - ./app:/app
     environment:
-      USERNAME: 'email'
-      PASSWORD: 'password'
+      USERNAME: 'describly2@gmail.com'
+      PASSWORD: 'K2s@12345'
       DEBUG: 1

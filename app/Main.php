@@ -35,7 +35,6 @@ class Main
 
         echo json_encode($_ENV, true);
 
-        $this->attemptLogin();
     }
 
     /**
@@ -66,6 +65,7 @@ class Main
         if (null !== $password) {
             self::$password = $password;
         }
+        $this->attemptLogin(); // Try to login to server
 
         $data = [];
         $userInfo = $this->getLoggedInUserInfo();

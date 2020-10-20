@@ -6,11 +6,6 @@ on:
     pull_request:
       branches: [ master ]
 
-
-env:
-  USERNAME: ${{ secrets.USERNAME }}
-  PASSWORD: ${{ secrets.PASSWORD }}
-
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -26,7 +21,6 @@ jobs:
         run: |
           php -v
           php app/Main.php
-
-#      - name: running the image
-#        run: |
-#          docker-compose run -e USERNAME=${{ secrets.USERNAME }} -e PASSWORD=${{ secrets.PASSWORD }} app sh -c "php Main.php"
+        env:
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}

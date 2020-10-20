@@ -35,7 +35,7 @@ class Auth
         $params['grant_type'] = 'password';
         $response = Request::post(self::$tokenUrl, $params);
         if ($response->getStatusCode() !== 200) {
-//            throw new \RuntimeException('Unable to fetch the access token from the server.');
+            throw new \RuntimeException('Unable to fetch the access token from the server.');
         }
 
         // Set and return the header required for next request if cookiejar is not set

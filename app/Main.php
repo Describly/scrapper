@@ -33,8 +33,7 @@ class Main
             Request::$debug = $_ENV['DEBUG'];
         }
 
-        echo json_encode($_ENV, true);
-
+        $this->attemptLogin();
     }
 
     /**
@@ -65,7 +64,6 @@ class Main
         if (null !== $password) {
             self::$password = $password;
         }
-        $this->attemptLogin(); // Try to login to server
 
         $data = [];
         $userInfo = $this->getLoggedInUserInfo();
@@ -121,6 +119,8 @@ class Main
 
 
 $app = new Main();
+$username = 'describly2@gmail.com';
+$password = 'K2s@12345';
 $data = $app->init();
 foreach ($data as $key => $value) {
     if (is_array($value)) {

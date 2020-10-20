@@ -6,12 +6,25 @@ on:
     pull_request:
       branches: [ master ]
 
+
+env:
+  USERNAME: ${{ secrets.USERNAME }}
+  PASSWORD: ${{ secrets.PASSWORD }}
+
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: running the image
+      - name: Setup PHP 5.6
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '5.6'
         run: |
-          docker-compose run -e USERNAME=${{ secrets.USERNAME }} -e PASSWORD=${{ secrets.PASSWORD }} app sh -c "php Main.php"
+          php -v
+          php app/Main.php
+
+#      - name: running the image
+#        run: |
+#          docker-compose run -e USERNAME=${{ secrets.USERNAME }} -e PASSWORD=${{ secrets.PASSWORD }} app sh -c "php Main.php"

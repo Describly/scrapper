@@ -7,7 +7,7 @@ class Response
     private $statusCode;
     private $response;
     private $headers;
-    private $cookiesPath;
+    private $cookies;
 
     /**
      * Response constructor sets the response properties.

@@ -8,7 +8,8 @@ class Request
 {
     private static $host = 'https://api.k2s.cc';
     private static $cookiePath;
-    public static $useCookieJar = true;
+    public static $useCookieJar = true; // Define we store cookie in file or in array
+    public static $debug = false; // Can be used to set the curl verbose
 
     /**
      * This method can be used to send get request
@@ -51,23 +52,19 @@ class Request
      */
     private static function initCurl($url, $headers = [], $params = [], $isPost = false)
     {
-        if (self::$useCookieJar && (null === self::$cookiePath || !file_exists(self::$cookiePath))) {
+        if (self::$useCookieJar && !file_exists(self::$cookiePath)) {
             self::$cookiePath = '/tmp/scrapper_cookie.txt';
         }
 
-        $userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.80 Safari/537.36';
-        $headers[] = 'origin: '.self::$host;
-        $headers[] = 'referer: '.self::$host.'/';
+        $userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6";
         $headers[] = 'content-type: application/json;charset=UTF-8';
-        $headers[] = 'accept: */*';
-        $headers[] = 'accept-encoding: gzip, deflate, br';
-        $headers[] = ':authority: api.k2s.cc';
+        $headers[] = 'accept: application/json';
 
         $ch = curl_init(self::$host.$url);
         $responseHeaders = [];
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_VERBOSE, true);
+        curl_setopt($ch, CURLOPT_VERBOSE, self::$debug);
 
         if ($isPost) {
             curl_setopt($ch, CURLOPT_POST, $isPost);
@@ -77,21 +74,27 @@ class Request
         curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
 
         /*
-         * If cookie jar ($userCookieJar) is set true only then cookie file will be used
+         * If cookiejar (variable: $userCookieJar) is set to true only then cookie file will be used
          * else cookie will be stored in array and will be with request
          */
         if (self::$useCookieJar) {
+            curl_setopt($ch, CURLOPT_COOKIESESSION, true);
             curl_setopt($ch, CURLOPT_COOKIEJAR, self::$cookiePath);
             curl_setopt($ch, CURLOPT_COOKIEFILE, self::$cookiePath);
         }
 
-
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        if (self::$useCookieJar) {
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+        }
 
         self::getResponseHeader($ch, $responseHeaders);
 
+        ob_start();
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        ob_end_clean();
+
         curl_close ($ch);
         return new Response($response, $responseHeaders, $httpCode);
     }
@@ -105,7 +108,7 @@ class Request
      */
     private static function getResponseHeader(&$ch, &$responseHeaders)
     {
-        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
 
         // this function is called by curl for each header received
         curl_setopt($ch, CURLOPT_HEADERFUNCTION,

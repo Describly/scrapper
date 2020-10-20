@@ -19,9 +19,3 @@ jobs:
 
       - name: Cheking PHP Version
         run: php -v
-
-      - name: Running the test
-        run: php app/Main.php
-        env:
-          USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}

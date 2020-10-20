@@ -119,9 +119,7 @@ class Main
 
 
 $app = new Main();
-$username = 'describly2@gmail.com';
-$password = 'K2s@12345';
-$data = $app->init($username, $password);
+$data = $app->init();
 foreach ($data as $key => $value) {
     if (is_array($value)) {
         foreach ($value as $k => $v) {

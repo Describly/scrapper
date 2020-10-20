@@ -1,0 +1,21 @@
+name: Docker
+
+on:
+  push:
+    branches: [ master ]
+    pull_request:
+      branches: [ master ]
+
+env:
+  USERNAME: ${{ secrets.USERNAME }}
+  PASSWORD: ${{ secrets.PASSWORD }}
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: running the image
+        run: |
+          docker-compose run app sh -c "php Main.php"

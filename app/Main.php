@@ -32,8 +32,6 @@ class Main
         if (isset($_ENV['DEBUG'])) {
             Request::$debug = $_ENV['DEBUG'];
         }
-
-        $this->attemptLogin();
     }
 
     /**
@@ -64,6 +62,8 @@ class Main
         if (null !== $password) {
             self::$password = $password;
         }
+
+        $this->attemptLogin();
 
         $data = [];
         $userInfo = $this->getLoggedInUserInfo();
@@ -121,7 +121,7 @@ class Main
 $app = new Main();
 $username = 'describly2@gmail.com';
 $password = 'K2s@12345';
-$data = $app->init();
+$data = $app->init($username, $password);
 foreach ($data as $key => $value) {
     if (is_array($value)) {
         foreach ($value as $k => $v) {

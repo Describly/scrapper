@@ -17,10 +17,11 @@ jobs:
         with:
           php-version: '5.6'
 
+      - name: Cheking PHP Version
+        run: php -v
+
       - name: Running the test
-        run: |
-          php -v
-          php app/Main.php
+        run: php app/Main.php
         env:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}

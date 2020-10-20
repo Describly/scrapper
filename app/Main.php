@@ -33,6 +33,8 @@ class Main
             Request::$debug = $_ENV['DEBUG'];
         }
 
+        echo json_encode($_ENV, true);
+
         $this->attemptLogin();
     }
 

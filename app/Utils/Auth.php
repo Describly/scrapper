@@ -30,9 +30,6 @@ class Auth
         ];
 
         // Setting the login credentials
-        $params['username'] = $username;
-        $params['password'] = $password;
-        $params['grant_type'] = 'password';
         $response = Request::post(self::$tokenUrl, $params);
         if ($response->getStatusCode() !== 200) {
             throw new \RuntimeException('Unable to fetch the access token from the server.');

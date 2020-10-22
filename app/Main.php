@@ -21,14 +21,6 @@ class Main
      */
     public function __construct()
     {
-        if (isset($_ENV['USERNAME'])) {
-            self::$username = $_ENV['USERNAME'];
-        }
-
-        if (isset($_ENV['PASSWORD'])) {
-            self::$password = $_ENV['PASSWORD'];
-        }
-
         if (isset($_ENV['DEBUG'])) {
             Request::$debug = $_ENV['DEBUG'];
         }
@@ -56,12 +48,12 @@ class Main
      */
     public function init($username = null, $password = null)
     {
-        if (null !== $username) {
-            self::$username = $username;
-        }
-        if (null !== $password) {
-            self::$password = $password;
-        }
+        /*
+         * Setting the static variable username & password
+         * so that login can be attempted from anywhere in the class without passing it.
+         */
+        self::$username = $username;
+        self::$password = $password;
 
         $this->attemptLogin();
 
@@ -117,9 +109,23 @@ class Main
     }
 }
 
+// Set the username password here
+$username = null;
+$password = null;
+
+// You can pass username and password using the docker env
+if (isset($_ENV['USERNAME'])) {
+    $username = $_ENV['USERNAME'];
+}
+
+if (isset($_ENV['PASSWORD'])) {
+    $password = $_ENV['PASSWORD'];
+}
+
 
 $app = new Main();
-$data = $app->init();
+$data = $app->init($username, $password);
+
 foreach ($data as $key => $value) {
     if (is_array($value)) {
         foreach ($value as $k => $v) {

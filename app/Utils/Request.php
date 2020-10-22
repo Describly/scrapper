@@ -6,7 +6,8 @@ include_once 'Response.php';
 
 class Request
 {
-    private static $host = 'https://api.k2s.cc';
+    private static $apiHost = 'https://api.k2s.cc';
+    private static $webHost = 'https://k2s.cc';
     private static $cookiePath;
     public static $useCookieJar = true; // Define we store cookie in file or in array
     public static $debug = false; // Can be used to set the curl verbose
@@ -16,12 +17,13 @@ class Request
      *
      * @param $url
      * @param array $headers
+     * @param bool $isWebRequest
      *
      * @return bool|string
      */
-    public static function get($url, $headers = [])
+    public static function get($url, $headers = [], $isWebRequest = false)
     {
-        return self::initCurl($url, $headers);
+        return self::initCurl($url, $headers, [], false, $isWebRequest);
     }
 
 
@@ -31,36 +33,42 @@ class Request
      * @param $url
      * @param $params
      * @param array $headers
+     * @param bool $isWebRequest
      *
      * @return Response
      */
-    public static function post($url, $params, $headers = [])
+    public static function post($url, $params, $headers = [], $isWebRequest = false)
     {
-        return self::initCurl($url, $headers, $params, true);
+        return self::initCurl($url, $headers, $params, true, $isWebRequest);
     }
 
 
     /**
      * This method initialize the curl request and sends the request based on the parameter given
      *
-     * @param $url
+     * @param $requestUrl
      * @param array $headers
      * @param array $params
-     * @param false $isPost
+     * @param bool $isPost
+     * @param bool $isWebRequest
      *
      * @return Response
      */
-    private static function initCurl($url, $headers = [], $params = [], $isPost = false)
+    public static function initCurlWithFullUrl($requestUrl, $headers = [], $params = [], $isPost = false, $isWebRequest = false)
     {
+
         if (self::$useCookieJar && !file_exists(self::$cookiePath)) {
             self::$cookiePath = '/tmp/scrapper_cookie.txt';
         }
 
-        $userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6";
-        $headers[] = 'content-type: application/json;charset=UTF-8';
-        $headers[] = 'accept: application/json';
+        if (!$isWebRequest) {
+            $headers[] = 'content-type: application/json;charset=UTF-8';
+            $headers[] = 'accept: application/json';
+        }
 
-        $ch = curl_init(self::$host.$url);
+        $userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.80 Safari/537.36";
+
+        $ch = curl_init($requestUrl);
         $responseHeaders = [];
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -70,7 +78,7 @@ class Request
             curl_setopt($ch, CURLOPT_POST, $isPost);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
         }
-
+        curl_setopt($ch,CURLOPT_ENCODING , "gzip");
         curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
 
         /*
@@ -97,6 +105,25 @@ class Request
 
         curl_close ($ch);
         return new Response($response, $responseHeaders, $httpCode);
+    }
+
+    /**
+     * This method initialize the curl request and sends the request based on the parameter given
+     *
+     * @param $url
+     * @param array $headers
+     * @param array $params
+     * @param bool $isPost
+     * @param bool $isWebRequest
+     *
+     * @return Response
+     */
+    private static function initCurl($url, $headers = [], $params = [], $isPost = false, $isWebRequest = false)
+    {
+        $host = $isWebRequest ? self::$webHost : self::$apiHost;
+        $requestUrl = $host.$url;
+
+        return self::initCurlWithFullUrl($requestUrl, $headers, $params, $isPost, $isWebRequest);
     }
 
 

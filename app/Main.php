@@ -46,7 +46,7 @@ class Main
      *
      * @return array
      */
-    public function init($username = null, $password = null)
+    public function init($username, $password)
     {
         /*
          * Setting the static variable username & password
@@ -126,6 +126,11 @@ if (isset($_ENV['PASSWORD'])) {
 $app = new Main();
 $data = $app->init($username, $password);
 
+/*
+ * Above $data variable contains all the information request in the assignment
+ * Below code will just print all the information as key-value pair
+ * It will also print the cookie used in the request
+ */
 foreach ($data as $key => $value) {
     if (is_array($value)) {
         foreach ($value as $k => $v) {

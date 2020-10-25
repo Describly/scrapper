@@ -16,8 +16,8 @@ To extract the following information using the curl in PHP
 Use only php5.6 and curl, use of third-party libraries/packages is not recommended.
 
 
-#Running the Script [Assignment Solution]
-##Step - 1 [Account Setup]
+# Running the Script [Assignment Solution]
+## Step - 1 [Account Setup]
  - Create an account on https://k2s.cc/ if not already registered.
  - Go to https://k2s.cc/ and login to the website using your username and password.
 

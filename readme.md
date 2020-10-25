@@ -1,7 +1,7 @@
 # Scrapper 
 This is an assignment project.
 
-#Target
+# Target
 To extract the following information using the curl in PHP
 ```json
 {

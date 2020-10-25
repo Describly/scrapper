@@ -47,7 +47,7 @@ Use only php5.6 and curl, use of third-party libraries/packages is not recommend
        
    - Without Docker:
      - Set the `$username` & `$password` variable value with your username and password.
-     - No go to you terminal and run the below command - 
+     - Now go to you terminal and run the below command - 
         ```shell script
         php Main.php
         ```

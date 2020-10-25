@@ -49,7 +49,7 @@ Use only php5.6 and curl, use of third-party libraries/packages is not recommend
      - Set the `$username` & `$password` variable value with your username and password.
      - Now go to you terminal and run the below command - 
         ```shell script
-        php Main.php
+        php app/Main.php
         ```
      - This will execute the script and print the result in JSON format in terminal.
  

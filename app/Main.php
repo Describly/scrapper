@@ -16,8 +16,10 @@ class Main
     private static $cookie;
 
     /**
-     * Main constructor make the required call to get the access_token
-     * and list of cookie required to make the other curl calls
+     * Main constructor.
+     * It will also check if the DEBUG parameter is passed through the ENV
+     * If is passed and true then it will set the curl option [CURLOPT_VERBOSE] to true
+     * so that we can see the request and response meta information in console
      */
     public function __construct()
     {
@@ -79,6 +81,7 @@ class Main
 
     /**
      * This method returns the profile stats
+     * Which will contains the information like total traffic today and used traffic today etc.
      *
      * @return mixed
      */
@@ -95,6 +98,7 @@ class Main
 
     /**
      * This methods returns the account type of the user
+     * Which will contain the information like user account type and other user information.
      *
      * @return mixed
      */
@@ -131,13 +135,4 @@ $data = $app->init($username, $password);
  * Below code will just print all the information as key-value pair
  * It will also print the cookie used in the request
  */
-foreach ($data as $key => $value) {
-    if (is_array($value)) {
-        foreach ($value as $k => $v) {
-            echo $key.'['.$k.'] => '.$v;
-            echo "\n";
-        }
-    } else {
-        echo "$key => $value \n";
-    }
-}
+echo json_encode($data);

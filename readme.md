@@ -69,3 +69,6 @@ Once you execute the script you will get below json:
 }
 ```
 
+ ## Other ways to do this
+ - We can use some browser emulator libraries available in PHP (eg. - [Mink](https://github.com/minkphp/Mink), [BrowserExt](https://github.com/scraperlab/browserext), etc.), if we do not want to use any other language.
+ - There are very good libraries and tools are available to bypass this check, eg. PhantomJs, CasperJs etc.

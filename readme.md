@@ -21,7 +21,7 @@ Use only php5.6 and curl, use of third-party libraries/packages is not recommend
  - Create an account on https://k2s.cc/ if not already registered.
  - Go to https://k2s.cc/ and login to the website using your username and password.
 
-## Project Setup
+## Project Setup & Executing
  - Clone the project
  - You can run this project in two ways `With Docker` or `Without Docker`
    - With Docker:
